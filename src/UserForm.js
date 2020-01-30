@@ -1,7 +1,8 @@
 import React, {useState} from "react";
-import {Formik, Form, Field, ErrorMessage} from "formik";
+import {Formik, Form, Field, ErrorMessage, yupToFormErrors} from "formik";
 import axios from "axios";
 import UserList from "./UsersList.js";
+import * as Yup from "yup";
 
 
 const UserForm = props => {
@@ -52,6 +53,10 @@ const UserForm = props => {
 
                         <Field name="password" type="password" placeholder="enter password" />
 
+                        <br></br>
+                        <label htmlFor="checkbox">Agree to Terms and Conditions</label>
+                        <Field name="checkbox" type="checkbox" />
+
                         <button name="submit" type="submit" disabled={props.isSubmitting}>
                             {props.isSubmitting ? 'Submitting' : 'Submit'}
                         </button>
@@ -59,6 +64,17 @@ const UserForm = props => {
                         
                     </Form>
                 );
+
+
+                /* validationSchema: Yup.object().shape({
+                        name: Yup.string()
+                            .min(3)
+                            .required(),
+                        email: Yup.string()
+                            .min(6)
+                            .required(),
+                        
+                    }) */
             }}
         />
         <UserList users={users} />

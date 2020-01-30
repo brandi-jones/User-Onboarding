@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import axios from "axios";
+import UserList from "./UsersList.js";
 
 
 const UserForm = props => {
@@ -38,6 +39,7 @@ const UserForm = props => {
     }
 
     return (
+        <>
         <Formik 
             onSubmit={handleSubmit}
             initialValues={{name: '', email: '', password: ''}}
@@ -59,6 +61,8 @@ const UserForm = props => {
                 );
             }}
         />
+        <UserList users={users} />
+        </>
     );
 }
 

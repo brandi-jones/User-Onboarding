@@ -43,20 +43,25 @@ const UserForm = props => {
         <>
         <Formik 
             onSubmit={handleSubmit}
-            initialValues={{name: '', email: '', password: ''}}
+            initialValues={{name: '', email: '', password: '', checkbox: false}}
+            validationSchema={validationSchema}
             render={props => {
                 return (
                     <Form>
-                        {/*touched.name && errors.name && <p>{errors.name}</p>*/}
+        
                         <Field name="name" type="text" placeholder="enter name" />
-                        
-                        <Field name="email" type="email" placeholder="enter email" />
+                        {props.touched.name && props.errors.name ? <p>{props.errors.name}</p> : null}
+
+                        <Field name="email" type="email" placeholder="enter email" value={props.values.email}/>
+                        {props.touched.email && props.errors.email ? <p>{props.errors.email}</p> : null}
 
                         <Field name="password" type="password" placeholder="enter password" />
+                        {props.touched.password && props.errors.password ? <p>{props.errors.password}</p> : null}
 
                         <br></br>
                         <label htmlFor="checkbox">Agree to Terms and Conditions</label>
                         <Field name="checkbox" type="checkbox"/>
+                        {props.touched.checkbox && props.errors.checkbox ? <p>{props.errors.checkbox}</p> : null}
 
                         <button name="submit" type="submit" disabled={props.isSubmitting}>
                             {props.isSubmitting ? 'Submitting' : 'Submit'}
@@ -74,48 +79,20 @@ const UserForm = props => {
     );
 }
 
-
-// const FormikLoginForm = withFormik({
-
-//     mapPropsToValues({name, email, password, checkbox}) {
-//         return {
-//             name: name || "",
-//             password: password || "", 
-//             checkbox: checkbox || false
-//         };
-//     },
-
-//     validationSchema: Yup.object().shape({
-//         name: Yup.string()
-//             .min(3, "Name must be 3 or more characters long")
-//             .required("Name is required"),
-//         email: Yup.string()
-//             .min(6, "Password must be 6 or more characters long")
-//             .required("Email is required"),
-        
-//     }),
-
-//     handleSubmit(values, tools) {
-//         axios.post('https://reqres.in/api/users', values)
-//         .then(response => {
-//             tools.resetForm();
-//             console.log(response);
-//             addNewUser(response.data);
-//         })
-//         .catch(error => {
-//             console.log("Error:", error);
-//         })
-//         .finally(() => {
-//             tools.setSubmitting(false);
-//             console.log("finally, users:", users);
-//         })
-
-//     }
-
-    
+const validationSchema = Yup.object().shape({
+    name: Yup.string()
+        .min(3, "Name must be 3 or more characters long")
+        .required("Name is required"),
+    email: Yup.string()
+        .email("Email not valid")
+        .required("Email is required"),
+    password: Yup.string()
+        .min(6, "Password must be 6 or more characters long")
+        .required("Password is required"),
+    checkbox: Yup.boolean()
+        .oneOf([true], 'Must Accept Terms and Conditions'),
+})
 
 
-
-// })(UserForm);
 
 export default UserForm;
